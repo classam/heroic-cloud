@@ -1,0 +1,14 @@
+{
+    "deck":{
+        "description": "text",
+        "theme": "key indexed|false",
+        "card":{
+            "json":"json",
+            "quantity":"integer default|0"
+        }
+    }, 
+    "theme":{
+        "stylesheet": "text", 
+        "public": "boolean default|false"
+    }
+}
