@@ -1,24 +1,23 @@
+from user import User
+from uuid import uuid4
+
 try:
     from google.appengine.ext import ndb
+    from google.appengine.api import users
 except ImportError:
-    from stubs import ndb
+    from stubs import ndb, users
 
 EVENT_CHOICES = ['create', 'update', 'delete']
 
-
-class User(ndb.entity):
-    created = ndb.DateTimeProperty(auto_now_add=True, indexed=False)
-    properties = ndb.JsonProperty(indexed=False)
 
 
 class Workspace(ndb.entity):
     created = ndb.DateTimeProperty(auto_now_add=True, indexed=False)
     owners = ndb.KeyProperty(repeated=True, kind=User)
-    channel = ndb.StringProperty(indexed=False)
 
 
-class GoogleUser(ndb.entity):
-    user = ndb.UserProperty(required=True)
+class Channel(ndb.entity):
+    channel = ndb.StringProperty()
 
 
 class Event(ndb.entity):
@@ -32,3 +31,25 @@ class Event(ndb.entity):
     created_at = ndb.DateTimeProperty(auto_now_add=True, indexed=True)
     values = ndb.JsonProperty(indexed=False)
     initiated_by = ndb.KeyProperty(indexed=False, kind=User)
+
+
+
+class CreateWorkspaceHandler(webapp2.RequestHandler):
+    def post(self):
+        token = self.request.get('token')
+        if token != '':
+            session = Session.find(token)
+            if session:
+                user = session.user
+            else:
+                user = None
+        else:
+            user = None
+
+        if not user:
+            # throw an error: you must have a valid token to
+            #   create a workspace
+
+        if user:
+            pass
+
