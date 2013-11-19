@@ -40,6 +40,8 @@ class EntityUrl(object):
         'hey/you'
         """
         return "/".join(self.path)
+    
+    # TODO: get_base_regex: match to /hey/<regex>/you/
 
     def get_entity_regex(self):
         """
@@ -58,6 +60,17 @@ class EntityUrl(object):
             string_list.append(r"/"+entity_name+r"/([\w\-]+)")
         return r"".join(string_list)
 
+    def get_request_handler(self):
+        """
+        How do we handle a request to /deck/arglebargle/card/argle?
+        """
+        def get(self, *args):
+            # merge ['deck', 'card'] with ('arglebargle', 'argle')
+            # to create ['deck', 'arglebargle', 'card', 'argle']
+            # use that to create a key, then pull the entity associated
+            # with the key
+            pass
+                        
     def get_entity_properties(self):
         """
         >>> m = Model({'hey':{'you':{'awesome':'yeah'}}})
