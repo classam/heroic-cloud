@@ -3,6 +3,7 @@ from entity_gen import generate_entity
 import json
 import utils
 import copy
+import re
 
 
 class Model(object):
@@ -42,9 +43,20 @@ class EntityUrl(object):
 
     def get_entity_regex(self):
         """
-
+        >>> m = Model({})
+        >>> e = EntityUrl(m, ['hey', 'you'])
+        >>> r = e.get_entity_regex()
+        >>> print r
+        /hey/([\w\-]+)/you/([\w\-]+)
+        >>> r = re.compile(r)
+        >>> m = r.match("/hey/all/you/geeks")
+        >>> m.groups()
+        ('all', 'geeks')
         """
-        pass
+        string_list = []
+        for entity_name in self.path:
+            string_list.append(r"/"+entity_name+r"/([\w\-]+)")
+        return r"".join(string_list)
 
     def get_entity_properties(self):
         """

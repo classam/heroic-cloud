@@ -3,11 +3,7 @@ try:
 except ImportError:
     from stubs import ndb
 
-
-class Workspace(ndb.entity):
-    created = ndb.DateTimeProperty(auto_now_add=True, indexed=False)
-    owners = ndb.KeyProperty(repeated=True, kind=DefaultEntities.User)
-    channel = ndb.StringProperty(indexed=False)
+EVENT_CHOICES = ['create', 'update', 'delete']
 
 
 class User(ndb.entity):
@@ -15,8 +11,14 @@ class User(ndb.entity):
     properties = ndb.JsonProperty(indexed=False)
 
 
+class Workspace(ndb.entity):
+    created = ndb.DateTimeProperty(auto_now_add=True, indexed=False)
+    owners = ndb.KeyProperty(repeated=True, kind=User)
+    channel = ndb.StringProperty(indexed=False)
+
+
 class GoogleUser(ndb.entity):
-    user = UserProperty(required=True)
+    user = ndb.UserProperty(required=True)
 
 
 class Event(ndb.entity):
@@ -25,7 +27,8 @@ class Event(ndb.entity):
         'update' 'deck/9283/cards/2931'  {...}
         'delete' 'deck/9283/cards/2931'  {...}
     """
-    action = StringProperty(indexed=True, choices=EVENT_CHOICES)
-    entity = KeyProperty(indexed=True)
+    action = ndb.StringProperty(indexed=True, choices=EVENT_CHOICES)
+    entity = ndb.KeyProperty(indexed=True)
     created_at = ndb.DateTimeProperty(auto_now_add=True, indexed=True)
-    values = JsonProperty(indexed=False)
+    values = ndb.JsonProperty(indexed=False)
+    initiated_by = ndb.KeyProperty(indexed=False, kind=User)
