@@ -18,7 +18,7 @@ parser.add_option("-p", "--pep", action="store_true", dest="pep",
 
 if options.start:
     call("~/google_appengine/dev_appserver.py . --host=0.0.0.0 " +
-         "--enable_console", shell=True)
+         "", shell=True)
 elif options.test:
     call("python `which nosetests`", shell=True)
 elif options.pep:
