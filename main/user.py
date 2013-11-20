@@ -14,8 +14,7 @@ except ImportError:
 class User(ndb.Model):
     created = ndb.DateTimeProperty(auto_now_add=True, indexed=False)
     properties = ndb.JsonProperty(indexed=False)
-    has_password = ndb.BoolProperty(indexed=True, default=False)
-    has_googleuser = ndb.BoolProperty(indexed=True, default=False)
+    disposable = ndb.BoolProperty(indexed=True, default=True)
 
     # Google Login
     googleuser = ndb.UserProperty()
@@ -52,6 +51,10 @@ class User(ndb.Model):
             return None
         else:
             return cls(username=candidates[0])
+
+    @classmethod
+    def authenticate(request, token):
+        blup
         
     @staticmethod
     def salt():
@@ -94,7 +97,7 @@ class CreateSessionHandler(webapp2.RequestHandler):
         if username and password:
             u = User.authenticate(username, password)
         elif googleuser:
-            u = User.googleuser(googleuser)
+            u = User.authenticate(googleuser)
         else:
             u = User.unique_user()
             u.put()
@@ -112,6 +115,22 @@ class RegisterHandler(webapp2.RequestHandler):
         s = Session.session(token, self.request.remote_addr)
         if s:
             user = s.key.parent().get()
+
+            username = self.request.get('username')
+            password = self.request.get('password')
+            googleuser = users.get_current_user()
+
+            if username and password: 
+                if user.password and user.password != "":
+                        
+
+            if user.password and user.password != "":
+                # can replace password
+
+            if user.googleuser:
+                # can replace googleuser
+
+
 
             # TODO: LOGIC LOGIC LOGIC
 
