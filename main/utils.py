@@ -1,8 +1,22 @@
 import inspect
-"""
-    Every project has a utils, right?
-    Stuff you might want to do again and again.
-"""
+import webapp2
+
+
+class EchoHandler(webapp2.RequestHandler):
+    def get(self):
+        resp = []
+        resp.append("Params:")
+        resp.append(str(self.request.params))
+        resp.append("\n")
+        resp.append("Cookies:")
+        resp.append(str(self.request.cookies))
+        resp.append("\n")
+        resp.append("Headers:")
+        resp.append(str(self.request.headers))
+        resp.append("\n")
+        resp.append("Remote Addr:")
+        resp.append(str(self.request.remote_addr))
+        self.response.write( "\n".join(resp) )
 
 
 def filter_keys(dictionary, keys):
